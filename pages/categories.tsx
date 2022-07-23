@@ -1,8 +1,8 @@
 import { GetServerSideProps } from "next";
 import { groq } from "next-sanity";
 import Head from "next/head";
-import React from "react";
-import { Layout, VerticalItem } from "../components";
+import React, { useState } from "react";
+import { Layout, Search, Tag, VerticalItem } from "../components";
 import { sanityClient } from "../sanity";
 import { Category, Post } from "../typings";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -17,6 +17,7 @@ interface Props {
 }
 
 const Categories = ({ posts, categories }: Props) => {
+  const [search, setSearch] = useState("");
   return (
     <Layout>
       <Head>
@@ -26,59 +27,84 @@ const Categories = ({ posts, categories }: Props) => {
           content="My sanity website for self improvement"
         />
       </Head>
-      <article className="px-10">
-        {categories.map((category) => (
-          <>
-            <h3 className="text-3xl mt-10 mb-3">
-              Posts with category{" "}
-              <Link
+      <div className="flex gap-5 px-10 ">
+        <Search search={search} setSearch={setSearch} />
+
+        {search == "" && (
+          <div className="hidden md:flex gap-5 ">
+            {categories.map((category) => (
+              <a
                 key={category._id}
-                href={{
-                  pathname: `/category/[slug]`,
-                  query: { slug: category.slug.current },
-                }}
+                href={`#${category._id}`}
+                className="my-auto"
               >
-                <span className="text-green-600 hover:underline cursor-pointer">
+                <p className="font-medium text-xl underline ">
                   {category.title}
-                </span>
-              </Link>
-            </h3>
-            <Swiper
-              key={category._id}
-              slidesPerView={1}
-              breakpoints={{
-                640: {
-                  slidesPerView: 2,
-                },
-                1024: {
-                  slidesPerView: 3,
-                },
-              }}
-              spaceBetween={30}
-              pagination={{
-                dynamicBullets: true,
-              }}
-              modules={[Pagination]}
-              className="mySwiper"
-            >
-              <div className="flex">
-                {posts.map((post) => {
-                  if (
-                    post.categories.filter(
-                      (e) => e.slug.current === category.slug.current
-                    ).length > 0
-                  ) {
-                    return (
-                      <SwiperSlide>
-                        <VerticalItem key={post._id} post={post} />
-                      </SwiperSlide>
-                    );
-                  }
-                })}
-              </div>
-            </Swiper>
-          </>
-        ))}
+                </p>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+      <article className="px-10">
+        {categories
+          .filter((category) => {
+            if (category.slug.current.includes(search.toLowerCase())) {
+              return category;
+            }
+          })
+          .map((category) => (
+            <div key={category._id} id={`${category._id}`}>
+              <h3 className="text-3xl mt-10 mb-3">
+                Posts with category{" "}
+                <Link
+                  key={category._id}
+                  href={{
+                    pathname: `/category/[slug]`,
+                    query: { slug: category.slug.current },
+                  }}
+                >
+                  <span className="text-green-600 hover:underline cursor-pointer">
+                    {category.title}
+                  </span>
+                </Link>
+              </h3>
+              <Swiper
+                key={category._id}
+                slidesPerView={1}
+                breakpoints={{
+                  640: {
+                    slidesPerView: 2,
+                  },
+                  1024: {
+                    slidesPerView: 3,
+                  },
+                }}
+                spaceBetween={30}
+                pagination={{
+                  dynamicBullets: true,
+                }}
+                modules={[Pagination]}
+                className="mySwiper"
+              >
+                <div className="flex">
+                  {posts.map((post) => {
+                    if (
+                      post.categories.filter(
+                        (e) => e.slug.current === category.slug.current
+                      ).length > 0
+                    ) {
+                      return (
+                        <SwiperSlide>
+                          <VerticalItem key={post._id} post={post} />
+                        </SwiperSlide>
+                      );
+                    }
+                  })}
+                </div>
+              </Swiper>
+            </div>
+          ))}
       </article>
     </Layout>
   );

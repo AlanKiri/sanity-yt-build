@@ -144,7 +144,7 @@ const Post = ({ post }: Props) => {
             <input
               {...register("email", { required: true })}
               className="shadow border rounded py-2 px-3 form-input mt-1 block w-full ring-yellow-500 focus:ring outline-none"
-              placeholder="John Appleseed"
+              placeholder="JohnApple@gmail.com"
               type="email"
             />
           </label>
@@ -153,7 +153,7 @@ const Post = ({ post }: Props) => {
             <textarea
               {...register("comment", { required: true })}
               className=" shadow border rounded py-2 px-3 form-textarea mt-1 block w-full ring-yellow-500  focus:ring outline-none"
-              placeholder="John Appleseed"
+              placeholder="Thanks for your work!"
               rows={8}
             ></textarea>
           </label>

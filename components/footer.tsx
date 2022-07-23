@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col sm:flex-row gap-y-10 sm:justify-between bg-yellow-400 items-center py-10 px-20 border-y border-black">
+    <footer className="flex flex-col sm:flex-row gap-y-10 sm:justify-between bg-yellow-400 items-center py-10 px-20 border-y border-black mt-auto">
       <div className="flex flex-col gap-5">
         <Link href="/">
           <img

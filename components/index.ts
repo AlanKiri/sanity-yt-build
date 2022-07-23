@@ -4,3 +4,4 @@ export { default as VerticalItem } from "./verticalItem";
 export { default as HorizontalItem } from "./horizontalItem";
 export { default as Footer } from "./footer";
 export { default as Tag } from "./tag";
+export { default as Search } from "./search";

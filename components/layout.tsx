@@ -8,7 +8,7 @@ interface props {
 
 const Layout = ({ children }: props) => {
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto min-h-screen flex flex-col">
       <Head>
         <title>Games.LL</title>
         <link
@@ -24,6 +24,7 @@ const Layout = ({ children }: props) => {
       </Head>
       <Header />
       {children}
+
       <Footer />
     </div>
   );
